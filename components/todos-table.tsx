@@ -11,6 +11,7 @@ import { Spinner } from "@heroui/spinner";
 import { ToastContainer, toast } from "react-toastify";
 import { Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/dropdown";
 import { VerticalDotsIcon } from "./icons";
+import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from "@heroui/modal";
 
 export default function TodosTables({ todos }: { todos: Todo[] }) {
   //할일 추가 가능 여부
@@ -21,6 +22,12 @@ export default function TodosTables({ todos }: { todos: Todo[] }) {
 
   //로딩상태
   const [isLoading, setIsLoading] = useState(false);
+
+  // 오픈 모달 상태
+  const [currentMadalData, setCurrentMadalData] = useState({
+    focusedTodo: null,
+    modalType: "detail",
+  });
 
   const router = useRouter();
 
@@ -39,9 +46,15 @@ export default function TodosTables({ todos }: { todos: Todo[] }) {
                   <VerticalDotsIcon className="text-default-300" />
                 </Button>
               </DropdownTrigger>
-              <DropdownMenu>
-                <DropdownItem key="view">상세보기</DropdownItem>
-                <DropdownItem key="edit">수정</DropdownItem>
+              <DropdownMenu
+                onAction={(key) => {
+                  console.log(`aTodo.id : ${aTodo.id}, key : ${key}`);
+                  setCurrentMadalData({ focusedTodo });
+                  onOpen();
+                }}
+              >
+                <DropdownItem key="detail">상세보기</DropdownItem>
+                <DropdownItem key="update">수정</DropdownItem>
                 <DropdownItem key="delete">삭제</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -99,8 +112,44 @@ export default function TodosTables({ todos }: { todos: Todo[] }) {
   };
   const notifyTodoAddedEvent = (msg: string) => toast.success(msg);
 
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+  const ModalComponent = () => {
+    return (
+      <div>
+        {/* <Button onPress={onOpen}>Open Modal</Button> */}
+        <Modal backdrop="blur" isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                <ModalBody>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor quam.</p>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pulvinar risus non risus hendrerit venenatis. Pellentesque sit amet hendrerit risus, sed porttitor quam.</p>
+                  <p>
+                    Magna exercitation reprehenderit magna aute tempor cupidatat consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex incididunt cillum quis. Velit duis sit officia eiusmod Lorem aliqua enim laboris do dolor eiusmod. Et mollit incididunt nisi consectetur esse laborum
+                    eiusmod pariatur proident Lorem eiusmod et. Culpa deserunt nostrud ad veniam.
+                  </p>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Close
+                  </Button>
+                  <Button color="primary" onPress={onClose}>
+                    Action
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </div>
+    );
+  };
+
   return (
     <div className="flex flex-col space-y-2">
+      <ModalComponent />
       <div>
         <ToastContainer position="top-right" autoClose={2000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />
       </div>
