@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchATodo, deleteATodo, editATodo } from "@/data/firestore";
 
 //GET
-export async function GET(request: NextRequest, { params }: { params: { slug: string } }) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
     const searchParams = request.nextUrl.searchParams;
 
     const query = searchParams.get("query");
 
-    const fetchedTodo = await fetchATodo(params.slug);
+    const fetchedTodo = await fetchATodo((await params).slug);
 
     if (fetchedTodo === null) {
         return new Response(null, { status: 204 });
