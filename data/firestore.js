@@ -20,7 +20,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 //LIST
-export async function fetchTodos() {
+async function fetchTodos() {
   const todosRef = collection(db, "todos");
   const q = query(todosRef, orderBy("created_at", "desc"));
   //   const querySnapshot = await getDocs(collection(db, "todos"));
@@ -48,7 +48,7 @@ export async function fetchTodos() {
 }
 
 //INSERT
-export async function addATodo({ title }) {
+async function addATodo({ title }) {
   const newTodoRef = doc(collection(db, "todos"));
 
   const createdAtTimestamp = Timestamp.fromDate(new Date());
@@ -71,7 +71,7 @@ export async function addATodo({ title }) {
 }
 
 //GET
-export async function fetchATodo(id) {
+async function fetchATodo(id) {
   if (id === null) {
     return null;
   }
@@ -97,7 +97,7 @@ export async function fetchATodo(id) {
 }
 
 //DELETE
-export async function deleteATodo(id) {
+async function deleteATodo(id) {
   const fetchedTodo = await fetchATodo(id);
 
   if (fetchedTodo === null) {
@@ -110,7 +110,7 @@ export async function deleteATodo(id) {
 }
 
 //UPDATE
-export async function editATodo(id, { title, is_done }) {
+async function editATodo(id, { title, is_done }) {
   const fetchedTodo = await fetchATodo(id);
 
   if (fetchedTodo === null) {
@@ -129,4 +129,4 @@ export async function editATodo(id, { title, is_done }) {
   };
 }
 
-module.exports = { fetchTodos, addATodo, fetchATodo, deleteATodo, editATodo };
+export { fetchTodos, addATodo, fetchATodo, deleteATodo, editATodo };
