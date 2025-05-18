@@ -3,16 +3,11 @@ import { Student } from "@/components/Student";
 import { Button } from "@heroui/button";
 import { initializeTraceState } from "next/dist/trace";
 import { useEffect, useReducer, useState } from "react";
+import { ACTION_TYPES } from "@/components/primitives";
 
 // reducer : state를 업데이트 하는 역할(은행)
 // dispatch : state 업데이트를 위한 요구
 // action : 요구의 내용
-
-export const ACTION_TYPES = {
-  add: "add",
-  del: "del",
-  chk: "chk",
-};
 
 type studentsInfo = {
   count: number;

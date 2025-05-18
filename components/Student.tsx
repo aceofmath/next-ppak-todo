@@ -1,7 +1,7 @@
 "use client";
 
-import { ACTION_TYPES } from "@/app/exam/0702/page";
 import { Button } from "@heroui/button";
+import { ACTION_TYPES } from "@/components/primitives";
 
 export const Student = ({ name, dispatch, id, isHere }: { name: string; dispatch: any; id: string; isHere: boolean }) => {
   return (
